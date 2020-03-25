@@ -1,4 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4
+#AUTOMAKE_OPTIONS = subdir-objects
 
 lib_LTLIBRARIES = libmme_host.la
 

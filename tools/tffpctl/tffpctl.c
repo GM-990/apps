@@ -22,9 +22,10 @@
 /*                  tffpctl now saves some settings into a file.          */
 /*                  --restoresettings                                     */
 /* 2011-07-23 V4.2  Added lonkeypress option to keyemulation mode         */
+/* 2015-11-06 V4.3  Added spinner control                                 */
 /**************************************************************************/
 
-#define VERSION "V4.2"
+#define VERSION "V4.3"
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -67,6 +68,7 @@
 #define _FRONTPANELSCROLLPAUSE          0x18
 #define _FRONTPANELSCROLLDELAY          0x19
 #define _FRONTPANELRESTORSETTINGS       0x1a
+#define _FRONTPANELSPINNER              0x1b
 
 
 #define SETTINGSFILE                    "/etc/tffpctl.conf"
@@ -87,6 +89,7 @@ typedef struct
 	unsigned char ScrollMode;
 	unsigned char ScrollPause;
 	unsigned char ScrollDelay;
+	unsigned char Spinner;
 	//--------------- for future enhancements: settings version 1 ends here
 } tSettings;
 
@@ -94,7 +97,7 @@ tSettings Settings;
 
 void Help(void)
 {
-	printf("Topfield TF7700HDPVR front panel controller " VERSION "\n\n");
+	printf("Topfield TF77X0HDPVR front panel controller " VERSION "\n\n");
 	printf("usage: tffpctl [options]\n\n");
 
 	printf("--gettime                    returns the current frontpanel time\n");
@@ -115,7 +118,8 @@ void Help(void)
 	printf("--cleardisplay               clears the front panel display\n");
 	printf("--resend                     sends the whole display buffer to the VFD\n");
 	printf("--allcaps <0|1>              show all chars of the big display in CAPS letters\n");
-	printf("--icon <xxxxxxxx_xxxxxxxx_m> defines which icons to displayed\n");
+	printf("--icon <xxxxxxxx_xxxxxxxx_m> defines which icons to be displayed\n");
+	printf("--spinner <0|1>              switches spinner on or off\n");
 
 	printf("--typematicdelay <0 to 255>  delay between the first and the repeated keys\n");
 	printf("--typematicrate <0 to 255>   delay between the repeated key codes\n");
@@ -243,6 +247,8 @@ int main(int argc, char **argv)
 
 			{"restoresettings", no_argument      , 0, 0},
 
+			{"spinner",         required_argument, 0, 0}, //0x1b
+
 			{NULL,      0, 0, 0}
 		};
 
@@ -343,7 +349,14 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_brightness fpdata;
 
 						fpdata.bright = atoi(optarg);
-						if (fpdata.bright > 5) fpdata.bright = 5;
+						if (fpdata.bright > 5)
+						{
+							fpdata.bright = 5;
+						}
+						if (fpdata.bright < 0)
+						{
+							fpdata.bright = 0;
+						}
 						Settings.Brightness = fpdata.bright;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELBRIGHTNESS, &fpdata);
@@ -354,7 +367,10 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_irfilter fpdata;
 
 						fpdata.onoff = atoi(optarg);
-						if (fpdata.onoff > 1) fpdata.onoff = 1;
+						if (fpdata.onoff != 0)
+						{
+							fpdata.onoff = 1;
+						}
 						Settings.IRFilter1 = fpdata.onoff;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELIRFILTER1, &fpdata);
@@ -365,7 +381,10 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_irfilter fpdata;
 
 						fpdata.onoff = atoi(optarg);
-						if (fpdata.onoff > 1) fpdata.onoff = 1;
+						if (fpdata.onoff != 0)
+						{
+							fpdata.onoff = 1;
+						}
 						Settings.IRFilter2 = fpdata.onoff;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELIRFILTER2, &fpdata);
@@ -376,7 +395,10 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_irfilter fpdata;
 
 						fpdata.onoff = atoi(optarg);
-						if (fpdata.onoff > 1) fpdata.onoff = 1;
+						if (fpdata.onoff != 0)
+						{
+							fpdata.onoff = 1;
+						}
 						Settings.IRFilter3 = fpdata.onoff;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELIRFILTER3, &fpdata);
@@ -387,7 +409,10 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_irfilter fpdata;
 
 						fpdata.onoff = atoi(optarg);
-						if (fpdata.onoff > 1) fpdata.onoff = 1;
+						if (fpdata.onoff != 0)
+						{
+							fpdata.onoff = 1;
+						}
 						Settings.IRFilter4 = fpdata.onoff;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELIRFILTER4, &fpdata);
@@ -439,6 +464,20 @@ int main(int argc, char **argv)
 						{
 							printf("Invalid icon parameter\n");
 						}
+						break;
+					}
+					case _FRONTPANELSPINNER:
+					{
+						frontpanel_ioctl_spinner fpdata;
+
+						fpdata.Spinner = atoi(optarg);
+						if (fpdata.Spinner != 0)
+						{
+							fpdata.Spinner = 1;
+						}
+						Settings.Spinner = fpdata.Spinner;
+						SaveSettings();
+						ioctl(file_fp, FRONTPANELSPINNER, &fpdata);
 						break;
 					}
 					case _FRONTPANELTYPEMATICDELAY:
@@ -493,7 +532,10 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_allcaps fpdata;
 
 						fpdata.AllCaps = atoi(optarg);
-						if (fpdata.AllCaps > 1) fpdata.AllCaps = 1;
+						if (fpdata.AllCaps != 0)
+						{
+							fpdata.AllCaps = 1;
+						}
 						Settings.AllCaps = fpdata.AllCaps;
 						SaveSettings();
 						ioctl(file_fp, FRONTPANELALLCAPS, &fpdata);
@@ -504,7 +546,14 @@ int main(int argc, char **argv)
 						frontpanel_ioctl_scrollmode fpdata;
 
 						fpdata.ScrollMode = atoi(optarg);
-						if (fpdata.ScrollMode > 2) fpdata.ScrollMode = 2;
+						if (fpdata.ScrollMode > 2)
+						{
+							fpdata.ScrollMode = 2;
+						}
+						if (fpdata.ScrollMode < 0)
+						{
+							fpdata.ScrollMode = 0;
+						}
 						Settings.ScrollMode = fpdata.ScrollMode;
 						fpdata.ScrollPause = Settings.ScrollPause;
 						fpdata.ScrollDelay = Settings.ScrollDelay;

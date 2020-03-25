@@ -41,81 +41,84 @@
 
 static tLongKeyPressSupport cLongKeyPressSupport =
 {
-	10, 120,
+	10, 120
 };
 
 /* Spider Box HL-101 RCU */
 static tButton cButtonsSpiderboxHL101[] =
 {
-	{"0BUTTON"	, "ff", KEY_0},
-	{"1BUTTON"	, "7f", KEY_1},
-	{"2BUTTON"	, "bf", KEY_2},
-	{"3BUTTON"	, "3f", KEY_3},
-	{"4BUTTON"	, "df", KEY_4},
-	{"5BUTTON"	, "5f", KEY_5},
-	{"6BUTTON"	, "9f", KEY_6},
-	{"7BUTTON"	, "1f", KEY_7},
-	{"8BUTTON"	, "ef", KEY_8},
-	{"9BUTTON"	, "6f", KEY_9},
-	{"STANDBY"	, "f7", KEY_POWER},
-	{"TIMER"	, "b7", KEY_TIME},
-	{"UHF"		, "d7", KEY_U},
-	{"V.FORMAT"	, "e7", KEY_V},
-	{"MUTE"		, "77", KEY_MUTE},
-	{"TV/SAT"	, "37", KEY_AUX},
-	{"TV/RADIO"	, "2f", KEY_TV2}, //WE USE TV2 AS TV/RADIO SWITCH BUTTON
-	{"FIND"		, "17", KEY_FIND},
-	{"FAV"		, "85", KEY_FAVORITES},
-	{"MENU"		, "af", KEY_MENU},
-	{"INFO"		, "25", KEY_INFO}, //THIS IS WRONG SHOULD BE KEY_INFO
-	{"GUIDE"	, "4f", KEY_EPG},
-	{"EXIT"		, "cf", KEY_HOME},
-	{"UP/P+"	, "67", KEY_UP},
-	{"DOWN/P-"	, "a7", KEY_DOWN},
-	{"LEFT/V-"	, "27", KEY_LEFT},
-	{"RIGHT/V+"	, "c7", KEY_RIGHT},
-	{"OK/LIST"	, "47", KEY_OK},
-	{"BACK"		, "0f", KEY_BACK},
-	{"RECORD"	, "8f", KEY_RECORD},
-	{"PLAY"		, "57", KEY_PLAY},
-	{"REWIND"	, "97", KEY_REWIND},
-	{"PAUSE"	, "87", KEY_PAUSE},
-	{"FASTFORWARD"	, "9d", KEY_FASTFORWARD},
-	{"STOP"		, "d5", KEY_STOP},
-	{"SLOWMOTION"	, "cd", KEY_SLOW},
-	{"STEPBACK"	, "95", KEY_PREVIOUS},
-	{"STEPFORWARD"	, "55", KEY_NEXT},
-	{"ARCHIVE"	, "15", KEY_ARCHIVE},
-	{"ZOOM"		, "e5", KEY_ZOOM},
-	{"PLAYMODE"	, "65", KEY_PLAYER},
-	{"USB"		, "a5", KEY_CLOSE},
-	{"AUDIO"	, "35", KEY_AUDIO},
-	{"SAT"		, "b5", KEY_SAT},
-	{"F1"		, "07", KEY_F1},
-	{"F2"		, "2d", KEY_F2},
-	{"RED"		, "3d", KEY_RED},
-	{"GREEN"	, "fd", KEY_GREEN},
-	{"YELLOW"	, "6d", KEY_YELLOW},
-	{"BLUE"		, "8d", KEY_BLUE},
-	{""		, ""  , KEY_NULL},
+	{"STANDBY"        , "f7", KEY_POWER},
+	{"MUTE"           , "77", KEY_MUTE},
+	{"V.FORMAT"       , "e7", KEY_V},
+	{"AUX"            , "37", KEY_AUX},
+
+	{"0BUTTON"        , "ff", KEY_0},
+	{"1BUTTON"        , "7f", KEY_1},
+	{"2BUTTON"        , "bf", KEY_2},
+	{"3BUTTON"        , "3f", KEY_3},
+	{"4BUTTON"        , "df", KEY_4},
+	{"5BUTTON"        , "5f", KEY_5},
+	{"6BUTTON"        , "9f", KEY_6},
+	{"7BUTTON"        , "1f", KEY_7},
+	{"8BUTTON"        , "ef", KEY_8},
+	{"9BUTTON"        , "6f", KEY_9},
+
+	{"BACK"           , "0f", KEY_BACK},
+	{"INFO"           , "25", KEY_INFO},  // THIS IS WRONG, SHOULD BE KEY_INFO
+	{"AUDIO"          , "35", KEY_AUDIO},
+
+	{"DOWN/P-"        , "a7", KEY_DOWN},
+	{"UP/P+"          , "67", KEY_UP},
+	{"RIGHT/V+"       , "c7", KEY_RIGHT},
+	{"LEFT/V-"        , "27", KEY_LEFT},
+	{"OK/LIST"        , "47", KEY_OK},
+	{"MENU"           , "af", KEY_MENU},
+	{"GUIDE"          , "4f", KEY_EPG},
+	{"EXIT"           , "cf", KEY_HOME},
+	{"FAV"            , "85", KEY_FAVORITES},
+
+	{"RED"            , "3d", KEY_RED},
+	{"GREEN"          , "fd", KEY_GREEN},
+	{"YELLOW"         , "6d", KEY_YELLOW},
+	{"BLUE"           , "8d", KEY_BLUE},
+
+	{"SLOW"           , "cd", KEY_SLOW},
+	{"F1"             , "07", KEY_F1},
+	{"F2"             , "2d", KEY_F2},
+	{"FIND"           , "17", KEY_FIND},
+	{"U"              , "d7", KEY_U},
+	{"REWIND"         , "65", KEY_REWIND},
+	{"PAUSE"          , "87", KEY_PAUSE},
+	{"PLAY"           , "57", KEY_PLAY},
+	{"FASTFORWARD"    , "9d", KEY_FASTFORWARD},
+	{"RECORD"         , "8f", KEY_RECORD},
+	{"STOP"           , "d5", KEY_STOP},
+	{"SLOWMOTION"     , "97", KEY_SLOW},
+	{"ARCHIVE"        , "15", KEY_ARCHIVE},
+	{"SAT"            , "b5", KEY_SAT},
+	{"STEPBACK"       , "95", KEY_PREVIOUS},
+	{"STEPFORWARD"    , "55", KEY_NEXT},
+	{"MARK"           , "4f", KEY_EPG},
+	{"TV/RADIO"       , "2f", KEY_TV2},  // WE USE TV2 AS TV/RADIO SWITCH BUTTON
+	{"USB"            , "a5", KEY_CLOSE},
+	{"TIMER"          , "b7", KEY_TIME},
+	{""               , ""  , KEY_NULL},
 };
+
 /* fixme: move this to a structure and
  * use the private structure of RemoteControl_t
  */
-static struct sockaddr_un  vAddr;
+static struct sockaddr_un vAddr;
+
 
 static int pInit(Context_t *context, int argc, char *argv[])
 {
-
 	int vHandle;
 
 	vAddr.sun_family = AF_UNIX;
 	// in new lircd its moved to /var/run/lirc/lircd by default and need use key to run as old version
-
 	strcpy(vAddr.sun_path, "/var/run/lirc/lircd");
-
 	vHandle = socket(AF_UNIX, SOCK_STREAM, 0);
-
 	if (vHandle == -1)
 	{
 		perror("socket");
@@ -127,41 +130,33 @@ static int pInit(Context_t *context, int argc, char *argv[])
 		perror("connect");
 		return -1;
 	}
-
 	return vHandle;
 }
 
 static int pShutdown(Context_t *context)
 {
-
 	close(context->fd);
-
 	return 0;
 }
 
 static int pRead(Context_t *context)
 {
-	char                vBuffer[128];
-	char                vData[10];
-	const int           cSize         = 128;
-	int                 vCurrentCode  = -1;
+	char vBuffer[128];
+	char vData[10];
+	const int cSize = 128;
+	int vCurrentCode  = -1;
 
 	memset(vBuffer, 0, 128);
-	//wait for new command
+	// wait for new command
 	read(context->fd, vBuffer, cSize);
 
-	//parse and send key event
-	vData[0] = vBuffer[17];
-	vData[1] = vBuffer[18];
-	vData[2] = '\0';
-
-
+	// parse and send key event
 	vData[0] = vBuffer[14];
 	vData[1] = vBuffer[15];
 	vData[2] = '\0';
 
-	printf("[RCU] key: %s -> %s\n", vData, &vBuffer[0]);
-	vCurrentCode = getInternalCode((tButton *)((RemoteControl_t *)context->r)->RemoteControl, vData);
+	printf("[evremote2 hl101] key: %s -> %s\n", vData, &vBuffer[0]);
+	vCurrentCode = getInternalCode(context->r->RemoteControl, vData);
 
 	if (vCurrentCode != 0)
 	{
@@ -171,10 +166,8 @@ static int pRead(Context_t *context)
 		{
 			nextflag++;
 		}
-
 		vCurrentCode += (nextflag << 16);
 	}
-
 	return vCurrentCode;
 }
 
@@ -184,18 +177,13 @@ static int pNotification(Context_t *context, const int cOn)
 	struct proton_ioctl_data vfd_data;
 	int ioctl_fd = -1;
 
-	if (cOn)
-	{
-		vfd_data.u.icon.on = 1;
-	}
-	else
+	vfd_data.u.icon.icon_nr = 35;
+	vfd_data.u.icon.on = cOn ? 1 : 0;
+	if (!cOn)
 	{
 		usleep(100000);
-		vfd_data.u.icon.on = 0;
 	}
-
 	ioctl_fd = open("/dev/vfd", O_RDONLY);
-	vfd_data.u.icon.icon_nr = 35;
 	ioctl(ioctl_fd, VFDICONDISPLAYONOFF, &vfd_data);
 	close(ioctl_fd);
 	return 0;
@@ -205,13 +193,19 @@ RemoteControl_t Hl101_RC =
 {
 	"Hl101 RemoteControl",
 	Hl101,
-	&pInit,
-	&pShutdown,
-	&pRead,
-	&pNotification,
 	cButtonsSpiderboxHL101,
 	NULL,
 	NULL,
 	1,
 	&cLongKeyPressSupport,
 };
+
+BoxRoutines_t Hl101_BR =
+{
+	&pInit,
+	&pShutdown,
+	&pRead,
+	&pNotification
+};
+// vim:ts=4
+

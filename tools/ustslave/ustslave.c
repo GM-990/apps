@@ -98,7 +98,7 @@ int writeToSlave(int cpuf, int fd, off_t DestinationAddress, unsigned int Source
 
 	err = lseek(cpuf, DestinationAddress, SEEK_SET);
 
-	printf("seeking to %x\n", (int)DestinationAddress);
+	//printf("seeking to %x\n", (int)DestinationAddress);
 
 	if (err < 0)
 	{
@@ -259,14 +259,14 @@ int readDescription(int fd, unsigned int Address, unsigned int Size)
 	err = lseek(fd, Address, SEEK_SET);
 	if (err < 0)
 	{
-		printf("error lseek Descritpion\n");
+		printf("error lseek Description\n");
 		return 1;
 	}
 
 	err = read(fd, &buf, Size);
 	if (err != Size)
 	{
-		printf("error read Descritpion\n");
+		printf("error read Description\n");
 		return 1;
 	}
 

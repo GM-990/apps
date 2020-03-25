@@ -1,5 +1,5 @@
 /*
- * evremote.c
+ * remotes.c
  *
  * (c) 2009 donald@teamducktales
  *
@@ -31,6 +31,7 @@ static RemoteControl_t *AvailableRemoteControls[] =
 	&UFS922_RC,
 	&UFC960_RC,
 	&Fortis_RC,
+	&Fortis_4G_RC,
 	&Hs5101_RC,
 	&UFS912_RC,
 	&Spark_RC,
@@ -43,17 +44,43 @@ static RemoteControl_t *AvailableRemoteControls[] =
 	NULL
 };
 
-int selectRemote(Context_t  *context, eBoxType type)
+static BoxRoutines_t *AvailableBoxRoutines[] =
+{
+	&Ufs910_1W_BR,
+	&Ufs910_14W_BR,
+	&Tf7700_BR,
+	&Hl101_BR,
+	&Vip2_BR,
+	&UFS922_BR,
+	&UFC960_BR,
+	&Fortis_BR,
+	&Fortis_4G_BR,
+	&Hs5101_BR,
+	&UFS912_BR,
+	&Spark_BR,
+	&Adb_Box_BR,
+	&Cuberevo_BR,
+	&Ipbox_BR,
+	&CNBOX_BR,
+	&VitaminHD5000_BR,
+	&LircdName_BR,
+	NULL
+};
+
+int selectRemote(Context_r_t *context_r, Context_t *context, eBoxType type)
 {
 	int i;
 
 	for (i = 0; AvailableRemoteControls[i] != 0ull; i++)
-
+	{
 		if (AvailableRemoteControls[i]->Type == type)
 		{
 			context->r = AvailableRemoteControls[i];
+			context_r->br = AvailableBoxRoutines[i];
 			return 0;
 		}
-
+	}
 	return -1;
 }
+// vim:ts=4
+
